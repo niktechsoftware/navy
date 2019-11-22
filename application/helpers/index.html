@@ -1,0 +1,449 @@
+<?php 
+class cronjobc extends CI_Controller{
+	function __construct()
+	{
+		parent::__construct();
+		$this->load->model("tree");
+		$this->load->model('cmodel');
+		$this->load->model("mpinmodel");
+	}
+	
+    function directIncome($cid){
+    	$lefttotal=0;
+    	$righttotal=0;
+    	$table="silver_tree";
+    	$posl="leftjoiner";
+    	$leftjoin = $this->tree->mydownline($cid,$posl,$table,1)->num_rows();
+    	$posr="rightjoiner";
+    	echo $leftjoin."left";
+    	$rightjoin = $this->tree->mydownline($cid,$posr,$table,1)->num_rows();
+    	echo $rightjoin."right";
+    	$this->db->where("c_id",$cid);
+    	$getdirect=$this->db->get("direct_income");
+    	$tblnm="invoice_serial";
+    	$maxid=$this->mpinmodel->pin_max($tblnm)+1;
+    	$id1=1000+$maxid;
+    	$invoice_number="UMAI".$id1;
+    	if($getdirect->num_rows()>0){
+    		$olddirp = $getdirect->row()->pair;
+    		$newp=($rightjoin+$leftjoin)-$olddirp;
+    		$datadd = array(
+    				'c_id'=>$cid,
+    				'pair'=>	($rightjoin+$leftjoin),
+    				'amount'=>($rightjoin+$leftjoin)*100
+    		);
+    		$this->db->where("c_id",$cid);
+    		$this->db->update("direct_income",$datadd);
+    		$daybookdirect = array(
+    				"invoice_no"    =>$invoice_number,
+    				"paid_to"	        =>$cid,
+    				"paid_from"     =>"ADLAdmin",
+    				"transaction_type"=>7,
+    				"date1"         =>date('Y-m-d H:i:s'),
+    				"amount"           =>($rightjoin+$leftjoin)*100
+    		);
+    		$this->db->insert("inner_daybook",$daybookdirect);
+    	}else{
+    		$datadd = array(
+    			'c_id'=>$cid,
+    				'pair'=>	($rightjoin+$leftjoin),
+    				'amount'=>($rightjoin+$leftjoin)*100
+    		);
+    		$this->db->insert("direct_income",$datadd);
+    		$daybookdirect = array(
+    				"invoice_no"    =>$invoice_number,
+    				"paid_to"	        =>$cid,
+    				"paid_from"     =>"ADL Admin",
+    				"transaction_type"=>7,
+    				"date1"         =>date('Y-m-d H:i:s'),
+    				"amount"           =>($rightjoin+$leftjoin)*100
+    		);
+    		$this->db->insert("inner_daybook",$daybookdirect);
+    	}
+    	
+    }
+    function pairMachingIncome($cid){
+        
+        echo "hahahaha-";
+      
+       
+        $pair=0;
+        $co=0;
+        $count1=0;
+        $cor=0;
+       $lefttotal=0;
+       $righttotal=0;
+       $table="silver_tree";
+       $posl="leftjoiner";
+       $this->db->where("c_id",$cid);
+       $gid = $this->db->get("silver_tree")->row();
+       if($gid->left){
+       $leftjoin = $this->tree->mydownline($gid->left,$posl,$table,0);
+       }else{
+         $leftjoin=0;  
+       }
+       $posr="rightjoiner";
+       echo $leftjoin."left ";
+       if($gid->right){
+       $rightjoin = $this->tree->mydownline($gid->right,$posr,$table,0);
+       }else{
+           $rightjoin=0;
+       }
+       echo $rightjoin."-right ";
+      //invoice code
+      	$tblnm="invoice_serial";
+		$maxid=$this->mpinmodel->pin_max($tblnm)+1;
+		$id1=1000+$maxid;
+		$invoice_number="ADLI".$id1;
+		//end invoice code
+		
+        if($rightjoin==$leftjoin){
+            $pair=$leftjoin;
+          
+        }else{
+            if($rightjoin > $leftjoin){
+             $pair=$leftjoin;
+        }else{
+            $pair=$rightjoin;
+        }}
+        echo "<br>pair/// =".$pair;
+      /* $getoldPair =  $this->tree->getPair("silver_mbalance",$cid);
+        $rewardPair = $pair-$getoldPair->row()->pair;
+        
+        if($rewardPair > 0){
+            if($rewardPair > 3){
+            	$caping = $rewardPair-3;
+            	$daybookCapping = array(
+            			"invoice_no"    =>$invoice_number,
+            			"paid_to"	        =>"ADLAdmin",
+            			"paid_from"     =>$cid,
+            			"transaction_type"=>8,
+            			"date1"         =>date('Y-m-d H:i:s'),
+            			"amount"           =>((($caping*600)-($caping*60))/2)
+            	);
+            	$this->db->insert("inner_daybook",$daybookCapping);
+            	$rewardPair=3;
+            }
+                
+		$invoice=array(
+			"invoice_no"=>$invoice_number,
+			"reason"=>"Admin Tax",
+			"invoice_date"=>date('Y-m-d H:i:s')
+		);
+		$this->db->insert("invoice_serial",$invoice);
+		
+          $daybooksilver = array(
+              	"invoice_no"    =>$invoice_number,
+              "paid_to"	        =>$cid,
+              	"paid_from"     =>"ADLAdmin",
+              	"transaction_type"=>6,
+              	"date1"         =>date('Y-m-d H:i:s'),
+              	"amount"           =>($rewardPair*60)
+              );
+          $this->db->insert("inner_daybook",$daybooksilver);
+          
+          $daybooksilver = array(
+              	"invoice_no"    =>$invoice_number,
+              "paid_to"	        =>$cid,
+              	"paid_from"     =>"ADLAdmin",
+              	"transaction_type"=>1,
+              	"date1"         =>date('Y-m-d H:i:s'),
+              	"amount"           =>((($rewardPair*600)-($rewardPair*60))/2)
+              );
+          $this->db->insert("inner_daybook",$daybooksilver);
+           $daybookupgreade = array(
+              	"invoice_no"    =>$invoice_number,
+              "paid_to"	        =>$cid,
+              	"paid_from"     =>"ADLAdmin",
+              	"transaction_type"=>5,
+              	"date1"         =>date('Y-m-d H:i:s'),
+              	"amount"           =>((($rewardPair*600)-($rewardPair*60))/2)
+              );
+          $this->db->insert("inner_daybook",$daybookupgreade);
+        
+                
+                $ramount = $getoldPair->row()->amount+ ((($rewardPair*600)-($rewardPair*60))/2);
+                $binaryincome=array(
+                    "pair"=>$rewardPair + $getoldPair->row()->pair,
+                    "amount"=>$ramount
+                    );
+                    $this->tree->update("silver_mbalance",$binaryincome,$cid);
+                    
+               
+                     $geGoldPair =  $this->tree->getPair("gold_mbalance",$cid);
+                    
+                     if($geGoldPair->num_rows()>0){
+                     	
+                         if($geGoldPair->row()->pair>14){
+                         	
+                              $geDmPair =  $this->tree->getPair("diamond_mbalance",$cid);
+                                      if($geDmPair->num_rows()>0){
+                                                         if($getDmPair->row()->pair>14){
+                                                                    $gecPair =  $this->tree->getPair("crown_balance",$cid);
+                                                                         if($gecPair->num_rows()>0){
+                                                                                 if($gecPair->row()->pair>14){
+                                                                                        
+                                                                                 }else{
+                                                                                    $binarycupg=array(
+                                                                                    "pair"=>$rewardPair + $getcPair->pair,
+                                                                                    "amount"=>$ramount
+                                                                                    );  
+                                                                                     $this->tree->update("crown_balance",$binarycupg,$cid);
+                                                                                                                        
+                                                                                 }
+                                                                         }else{
+                                                                             $binarycupg=array(
+                                                                             		"c_id"=>$cid,
+                                                                                    "pair"=>$rewardPair,
+                                                                                    "amount"=>$ramount
+                                                                                    );
+                                                                                     $this->tree->insert("crown_balance",$binarycupg);
+                                                                         }
+                                                             
+                                                         }else{
+                                                         	
+                                                         	$totpdm=$getDmPair->row()->pair+$rewardPair;
+                                                         	$dmaddPair=0;
+                                                         	if($totptu>14){
+                                                         		$dmaddPair=14-$getDmPair->row()->pair;
+                                                         		$rewardPair=$totptu-$dmaddPair;
+                                                         	}else{
+                                                         		$dmaddPair=$rewardPair;
+                                                         	}
+                                                         	$ramount1 = $getDmPair->row()->amount+ ((($dmaddPair*600)-($dmaddPair*60))/2);
+                                                         	
+                                                         	
+                                                         	
+                                                         	
+                                                              $binarydmupg=array(
+                                                                    "pair"=>$dmaddPair + $getGoldPair->pair,
+                                                                    "amount"=>$ramount1
+                                                                    );  
+                                                                     $this->tree->update("diamond_mbalance",$binarydmupg,$cid);
+                                                                     
+                                                                     $gecPair =  $this->tree->getPair("crown_balance",$cid);
+                                                                     if($gecPair->num_rows()>0){
+                                                                     	
+                                                                     		$binarycupg=array(
+                                                                     				"pair"=>$rewardPair + $getcPair->pair,
+                                                                     				"amount"=>$ramount1
+                                                                     		);
+                                                                     		$this->tree->update("crown_balance",$binarycupg,$cid);
+                                                                     
+                                                                     	
+                                                                     }else{
+                                                                             $binarycupg=array(
+                                                                             		"c_id"=>$cid,
+                                                                                    "pair"=>$rewardPair,
+                                                                                    "amount"=>$ramount1
+                                                                                    );
+                                                                                     $this->tree->insert("crown_balance",$binarycupg);
+                                                                         }  
+                                                                     
+                                                                     
+                                                                                                         }
+                                      }else{
+                                           $binarydmupg=array(
+                                           		"c_id"=>$cid,
+                            "pair"=>$rewardPair,
+                            "amount"=>$ramount
+                            );
+                             $this->tree->insert("diamond_mbalance",$binarydmupg);
+                             
+                                      }
+                              
+                         }else{
+                         	$totptu=$geGoldPair->row()->pair+$rewardPair;
+                         	$goldaddPair=0;
+                         	if($totptu>14){
+                         		$goldaddPair=14-$geGoldPair->row()->pair;
+                         		$rewardPair=$totptu-$goldaddPair;
+                         	}else{
+                         		$goldaddPair=$rewardPair;
+                         	}
+                         	$ramount1 = $geGoldPair->row()->amount+ ((($goldaddPair*600)-($goldaddPair*60))/2);
+                            $binarygoldupg=array(
+                    "pair"=>$goldaddPair + $geGoldPair->row()->pair,
+                    "amount"=>$ramount1
+                    );  
+                     $this->tree->update("gold_mbalance",$binarygoldupg,$cid);
+                     $geDmPair =  $this->tree->getPair("diamond_mbalance",$cid);
+                     
+                     if($geDmPair->num_rows()>0){
+                     	$binarydmupg=array(
+                     			"pair"=>$rewardPair + $geGoldPair->row()->pair,
+                     			"amount"=>$ramount
+                     	);
+                     	$this->tree->update("diamond_mbalance",$binarydmupg,$cid);
+                     }else{
+                     	$binarydmupg=array(
+                     			"c_id"=>$cid,
+                     			"pair"=>$rewardPair,
+                     			"amount"=>$ramount1
+                     	);
+                     	$this->tree->insert("diamond_mbalance",$binarydmupg);
+                     	
+                     	}
+                     }
+                     
+                     }else{
+                      $binarygoldupg=array(
+                      		"c_id"=>$cid,
+                    "pair"=>$rewardPair,
+                    "amount"=>$ramount
+                    );
+                      
+                     $this->tree->insert("gold_mbalance",$binarygoldupg);
+                     }
+                   
+        }*/
+        
+    }
+    
+    public function poolIncome($cid){
+    	 $lefttotal=0;
+       $righttotal=0;
+       $table="silver_tree";
+       $posl="leftjoiner";
+       $leftjoin = $this->tree->mydownline($cid,$posl,$table,1)->num_rows();
+       $posr="rightjoiner";
+       echo $leftjoin."left";
+       $rightjoin = $this->tree->mydownline($cid,$posr,$table,1)->num_rows();
+       echo $rightjoin."right";
+      //invoice code
+      	$tblnm="invoice_serial";
+		$maxid=$this->mpinmodel->pin_max($tblnm)+1;
+		$id1=1000+$maxid;
+		$invoice_number="ADLI".$id1;
+		$leveln=0;
+		if(($rightjoin>1)&&($leftjoin>1)){
+			$totperson = $rightjoin+$leftjoin;
+			$aumaster = $this->db->get("auto_pool");
+			foreach($aumaster->result() as $amp):
+			if($amp->person_no > $totperson){
+				$leveln =$amp->id-1;
+				break;
+			}
+				
+			endforeach;	
+				if($leveln>0){
+				$this->db->where("id",$leveln);
+				$getrate1=$this->db->get("auto_pool");
+				
+				//echo $leveln;
+			$this->db->where("c_id",$cid);
+		$old_details1 =$this->db->get("autopool_details");
+		if($old_details1->num_rows()>0){
+			$getrate=$getrate1->row();
+			$old_details =$old_details1->row();
+				if($leveln > $old_details->level){
+					echo $getrate->pool_amount;
+					$datapool = array(
+							
+							'level'=>$leveln,
+							'pool_income'=>$old_details->pool_income+$getrate->pool_amount,
+							
+					);
+					$this->db->where("c_id",$cid);
+					$this->db->update("autopool_details",$datapool);
+					$daypoi = array(
+							"invoice_no"    =>$invoice_number,
+							"paid_to"	        =>$cid,
+							"paid_from"     =>"Pool Admin",
+							"transaction_type"=>2,
+							"date1"         =>date('Y-m-d H:i:s'),
+							"amount"           =>$getrate->pool_amount
+					);
+					$this->db->insert("inner_daybook",$daypoi);
+					$this->db->where("id",($leveln-1));
+					$adp = $this->db->get("autopool_details");
+					if($adp->num_rows()>0){
+						$totroi = $adp->num_rows/160;
+						foreach($adp->result() as $roi):
+						$dataroiup =array(
+								'roi_income'=>($roi->roi_income+$totroi),
+						);
+						$this->db->where("c_id",$cid);
+						$this->db->update("autopool_details");
+						$dayroi = array(
+								"invoice_no"    =>$invoice_number,
+								"paid_to"	        =>$roi->c_id,
+								"paid_from"     =>$cid,
+								"transaction_type"=>3,
+								"date1"         =>date('Y-m-d H:i:s'),
+								"amount"           =>$totroi
+						);
+						$this->db->insert("inner_daybook",$dayroi);
+						endforeach;
+					}
+					
+					
+					
+			}
+			
+			
+			
+		}else{
+			
+			$getrate=$getrate1->row();
+				$datapool = array(
+					'c_id'=>$cid,
+						'level'=>$leveln,
+						'pool_income'=>$getrate->pool_amount,
+						'roi_income'=>0.00
+				);
+				$this->db->insert("autopool_details",$datapool);
+				$daypoi = array(
+						"invoice_no"    =>$invoice_number,
+						"paid_to"	        =>$cid,
+						"paid_from"     =>"Pool Admin",
+						"transaction_type"=>2,
+						"date1"         =>date('Y-m-d H:i:s'),
+						"amount"           =>$getrate->pool_amount
+				);
+				$this->db->insert("inner_daybook",$daypoi);
+				$this->db->where("id",($leveln-1));
+				$adp = $this->db->get("autopool_details");
+				if($adp->num_rows()>0){
+					$totroi = $adp->num_rows/160;
+					foreach($adp->result() as $roi):
+					$dataroiup =array(
+							'roi_income'=>($roi+$totroi),
+					);
+					$this->db->where("c_id",$cid);
+					$this->db->update("autopool_details");
+					$dayroi = array(
+							"invoice_no"    =>$invoice_number,
+							"paid_to"	        =>$roi->c_id,
+							"paid_from"     =>$cid,
+							"transaction_type"=>3,
+							"date1"         =>date('Y-m-d H:i:s'),
+							"amount"           =>$totroi
+					);
+					$this->db->insert("inner_daybook",$dayroi);
+					endforeach;
+				}
+			}
+			}
+			
+		}
+		
+    }
+    
+    function generate_income(){
+        $number ="8382829593";
+        $msg ="hello Word";
+       // sms($number,$msg);
+       $getCustomer = $this->db->get("customer_info");
+       if($getCustomer->num_rows()>0){
+        foreach($getCustomer->result() as $gc):
+      // $this->directIncome($gc->id);
+        $this->pairMachingIncome($gc->id);
+       // $this->poolIncome($gc->id);
+        //$this->roiincome($gc->id);
+       
+        
+        endforeach;}
+    }
+    
+}
