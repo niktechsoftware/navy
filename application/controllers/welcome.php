@@ -22,22 +22,17 @@ class Welcome extends CI_Controller {
 		$this->load->view('loginPage');
 	}
 	
-	function login_check(){
+	function login_check()
+	{
 	    
 		$query = $this->loginmodel->validate();
-		if($query['is_login']){  
-			
-			if($query['login_type'] == 1):
+		if($query)
+		{  
 			$this->session->set_userdata($query);
 			redirect("login/index");
-			elseif($query['login_type'] == 2):
-			$this->session->set_userdata($query);
-			redirect("clogin/index");
-			else:
-			redirect("welcome/index/authFalse");
-			endif;
 		}
-		else{ // if user not validate the credential ....
+		else
+		{ // if user not validate the credential ....
 			redirect("welcome/index/authFalse");
 		}
 	}

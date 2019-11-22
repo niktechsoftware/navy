@@ -24,7 +24,7 @@
 */
 
 
-$config['base_url'] = 'http://localhost:8080/navy';
+$config['base_url'] = 'http://localhost/navy/';
 
 
 // $config['base_url'] = 'http://localhost:8080/adlgm.in/adlsoft';

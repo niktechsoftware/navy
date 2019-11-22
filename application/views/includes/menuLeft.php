@@ -8,9 +8,9 @@
           <div class="sidebar-user">
             <div class="sidebar-user-picture">
               <?php if(strlen($this->session->userdata('image'))>0){?>
-              <img alt="image" src="<?php echo base_url();?>assets/img/users/<?php echo $this->session->userdata('image');?>"
+              <img alt="image" src="<?php echo base_url();?>assets/img/users/<?php echo $this->session->userdata('image');?>">
               <?php }else {?>
-              <img alt="image" src="<?php echo base_url();?>assets/img/default.jpg"
+              <img alt="image" src="<?php echo base_url();?>assets/img/default.jpg">
               
               <?php }?>
             </div>
