@@ -9,7 +9,6 @@
 	     	
 		 function updateAdminPassword($data)
 		 {
-			//$this->db->where("school_code",$this->session->userdata("school_code"));
 			if($this->db->update("general_settings",$data)){
 				return true;
 			}
@@ -18,11 +17,26 @@
 			}
 		}
 	
-		function insert_exam($e_name)
+		public function insert_exam($e_name)
 		{
-			return $this->db->insert('exam_master',$e_name);    
+			$val = array('name'=>$e_name);
+			return $in_sert = $this->db->insert('exam_master',$val);    
 		}
-   
+		public function exam_name()
+		{
+			 $gt = $this->db->get('exam_master');
+			 return $gt;
+		}
+		public function insert_subject($sub_ject)
+		{
+			$val = array('subject_name'=>$sub_ject);
+			return $in_sub = $this->db->insert('exam_subjects',$val);    
+		}
+		public function subject_name()
+		{
+			 $gt_sub = $this->db->get('exam_subjects');
+			 return $gt_sub;
+		}
 
 	}
     

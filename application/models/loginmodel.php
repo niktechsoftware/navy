@@ -60,7 +60,8 @@ class loginmodel extends CI_Model{
     			return false;
     		}
     	}
-    	elseif($login_type == "student"){
+		elseif($login_type == "student")
+		{
 
     	//	$this->db->where("school_code",$this->session->userdata("school_code"));
     		$this->db->where("status",1);
@@ -70,7 +71,8 @@ class loginmodel extends CI_Model{
     		if($result->num_rows() > 1){
     			return true;
     		}
-    		else{
+			else
+			{
     			return false;
     		}
     	}

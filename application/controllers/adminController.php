@@ -17,6 +17,9 @@ Class AdminController extends CI_Controller{
 	}
 	function create_exam()
 	{
+		$this->load->model('adminmodel');
+		$data['gt_val'] = $this->adminmodel->exam_name();
+		$data['dt_subject'] = $this->adminmodel->subject_name();
 	    $data['pageTitle'] = 'Configuration Exam';
 		$data['smallTitle'] = 'Configuration Exam';
 		$data['mainPage'] = 'Configuration Exam';
@@ -28,18 +31,50 @@ Class AdminController extends CI_Controller{
 		$this->load->view("includes/mainContent", $data);
 	    
 	}
-	function insert_exam()
+
+	public function insert_exam()
 	{
-		echo $e_name = $this->input->post('e_name');
-		// $in = $this->exam_m->insert_exam($e_name);
-		// if($in)
-		// {
-		// 	echo "yes";
-		// }
-		// else
-		// {
-		// 	echo "no";
-		// }
+		$e_name = $this->input->post('e_name');
+		$this->db->where('name',$e_name);
+		$chk = $this->db->get('exam_master');
+		if($chk->num_rows()>0)
+		{
+			echo "3";
+		}
+		else
+		{
+			$in = $this->adminmodel->insert_exam($e_name);
+			if($in)
+			{
+				echo " 1";
+			}
+			else
+			{
+				echo "0";
+			}
+		}		
+	}
+	public function insert_subject()
+	{
+		$sub_ject = $this->input->post('sub_ject');
+		$this->db->where('subject_name',$sub_ject);
+		$chk = $this->db->get('exam_subjects');
+		if($chk->num_rows()>0)
+		{
+			echo "3";
+		}
+		else
+		{
+			$in_sub = $this->adminmodel->insert_subject($sub_ject);
+			if($in_sub)
+			{
+				echo " 1";
+			}
+			else
+			{
+				echo "0";
+			}
+		}
 	}
 }
 ?>

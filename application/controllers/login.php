@@ -10,12 +10,10 @@ class Login extends CI_Controller{
 		$data['smallTitle'] = 'Overview of all Section';
 		$data['mainPage'] = 'Dashboard';
 		$data['subPage'] = 'dashboard';
-
 		$data['title'] = 'Dashboard';
-
 		$data['headerCss'] = 'headerCss/dashboardCss';
 		$data['footerJs'] = 'footerJs/dashboardJs';
-		$data['mainContent'] = 'exam/create_exam';
+		$data['mainContent'] = 'exam/dashboard';
 		$this->load->view("includes/mainContent", $data);
 	}
 }
