@@ -17,9 +17,9 @@ Class AdminController extends CI_Controller{
 	}
 	function create_exam()
 	{
-		$this->load->model('adminmodel');
 		$data['gt_val'] = $this->adminmodel->exam_name();
 		$data['dt_subject'] = $this->adminmodel->subject_name();
+		$data['dt_test'] = $this->adminmodel->test_data();
 	    $data['pageTitle'] = 'Configuration Exam';
 		$data['smallTitle'] = 'Configuration Exam';
 		$data['mainPage'] = 'Configuration Exam';
@@ -75,6 +75,73 @@ Class AdminController extends CI_Controller{
 				echo "0";
 			}
 		}
+	}
+	public function create_test()
+	{
+		$exam_id = $this->input->post('exam_n');
+		$test_name = $this->input->post('test_n');
+		$wh_val = array('exam_master_id'=>$exam_id,
+						'exam_name'=>$test_name);
+		$this->db->where($wh_val);
+		$chk = $this->db->get('exam_name');
+		if($chk->num_rows()>0)
+		{
+			echo "3";
+		}
+		else
+		{
+			$in_test = $this->adminmodel->create_test($test_name,$exam_id);
+			if($in_test)
+			{
+				echo " 1";
+			}
+			else
+			{
+				echo "0";
+			}
+		}
+	}
+	
+	function config_test()
+	{
+		$data['gt_val'] = $this->adminmodel->exam_name();
+		$data['dt_subject'] = $this->adminmodel->subject_name();
+		$data['dt_test'] = $this->adminmodel->test_data();
+	    $data['pageTitle'] = 'Configuration Test';
+		$data['smallTitle'] = 'Configuration Test';
+		$data['mainPage'] = 'Configuration Test';
+		$data['subPage'] = 'Configuration Test';
+		$data['title'] = 'Configuration Test Page';
+		$data['headerCss'] = 'headerCss/dashboardCss';
+		$data['footerJs'] = 'footerJs/customerJs';
+		$data['mainContent'] = 'exam/config_test';
+		$this->load->view("includes/mainContent", $data);
+	    
+	}
+	public function select_exam()
+	{
+		$exam_id = $this->input->post('exam_n');
+		$da = $this->adminmodel->select_exam_data($exam_id);
+		foreach($da->result() as $dx)
+		{ ?>
+			<option value="<?= $dx->id;?>"><?= $dx->exam_name;?></option>
+		<?php }
+	}
+	function create_ques()
+	{
+		$data['q_nmbr'] = $this->input->post('q_nmbr');
+		$data['select_exam'] = $this->input->post('select_exam');
+		$data['select_test'] = $this->input->post('select_test');
+		$data['select_subject'] = $this->input->post('select_subject');
+	    $data['pageTitle'] = 'Configuration Test';
+		$data['smallTitle'] = 'Configuration Test';
+		$data['mainPage'] = 'Configuration Test';
+		$data['subPage'] = 'Configuration Test';
+		$data['title'] = 'Configuration Test Page';
+		$data['headerCss'] = 'headerCss/dashboardCss';
+		$data['footerJs'] = 'footerJs/customerJs';
+		$data['mainContent'] = 'exam/create_ques';
+		$this->load->view("includes/mainContent", $data);	    
 	}
 }
 ?>

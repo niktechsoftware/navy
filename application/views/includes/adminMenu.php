@@ -5,7 +5,10 @@
               
             </li>
             <li>
-              <a href="<?php echo base_url();?>index.php/adminController/create_exam"><span>Configuration Exam</span></a>
+              <a href="<?php echo base_url();?>index.php/adminController/create_exam"><i data-feather="monitor"></i><span>Configuration Exam</span></a>
+            </li>
+            <li>
+              <a href="<?php echo base_url();?>index.php/adminController/config_test"><i data-feather="monitor"></i><span>Configuration Test</span></a>
             </li>
             
          

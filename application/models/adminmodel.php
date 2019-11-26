@@ -37,7 +37,25 @@
 			 $gt_sub = $this->db->get('exam_subjects');
 			 return $gt_sub;
 		}
-
+		public function create_test($test_name,$exam_id)
+		{
+			$val = array('exam_master_id'=>$exam_id,
+						'exam_name'=>$test_name);
+			$cr_test = $this->db->insert('exam_name',$val);
+			return $cr_test;
+		}
+		public function test_data()
+		{
+			 $gt_ex_nm = $this->db->get('exam_name');
+			 return $gt_ex_nm;
+		}
+		public function select_exam_data($exam_id)
+		{
+			$this->db->where('exam_master_id',$exam_id);
+			$this->db->group_by('exam_name');
+			$st_dt = $this->db->get('exam_name');
+			return $st_dt;
+		}
 	}
     
     ?>
