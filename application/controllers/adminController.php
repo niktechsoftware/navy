@@ -143,5 +143,43 @@ Class AdminController extends CI_Controller{
 		$data['mainContent'] = 'exam/create_ques';
 		$this->load->view("includes/mainContent", $data);	    
 	}
+	function insert_question()
+	{
+
+		 $ques = $this->input->post('ques');
+		 $ans = $this->input->post('ans');
+		 $a = $this->input->post('a');
+		 $b = $this->input->post('b');
+		 $c = $this->input->post('c');
+		 $d = $this->input->post('d');
+		 $e = $this->input->post('e');
+		 $exam_subject_id = $this->input->post('exam_subject_id');
+		 $exam_name_id = $this->input->post('exam_name_id');
+		 $exam_master_id = $this->input->post('exam_master_id');
+		 $wh_val = array(
+			'question'=>$ques,
+			'exam_name_id'=>$exam_name_id,
+			'exam_subject_id'=>$exam_subject_id,
+			'exam_master_id'=>$exam_master_id);
+			$this->db->where($wh_val);
+			$chk = $this->db->get('question_master');
+			if($chk->num_rows()>0)
+			{
+				echo "3";
+			}
+			else
+			{
+				$da = $this->adminmodel->insert_ques($ques,$exam_name_id,$exam_subject_id,$exam_master_id,$ans,$a,$b,$c,$d,$e);
+				if($da)
+				{
+					echo "1";
+				}
+				else
+				{
+					echo "0";
+				}
+			}
+		
+	}
 }
 ?>

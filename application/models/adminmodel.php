@@ -56,6 +56,44 @@
 			$st_dt = $this->db->get('exam_name');
 			return $st_dt;
 		}
+		public function insert_ques($ques,$exam_name_id,$exam_subject_id,$exam_master_id,$ans,$a,$b,$c,$d,$e)
+		{
+			$val1 = array(
+				'question'=>$ques,
+				'exam_name_id'=>$exam_name_id,
+				'exam_subject_id'=>$exam_subject_id,
+				'exam_master_id'=>$exam_master_id );
+			$in_q1 = $this->db->insert('question_master',$val1);
+			if($in_q1)
+			{
+				$tt=$this->db->insert_id();
+				$val2 = array(
+					'question_master_id'=>$tt,
+					'A'=>$a,
+					'B'=>$b,
+					'C'=>$c,
+					'D'=>$d,
+					'E'=>$e);
+				$in_q2 = $this->db->insert('question_ans',$val2);
+				if($in_q2)
+				{
+					$val3 = array(
+						'question_master_id'=>$tt,
+						'right_answer'=>$ans,
+						);
+					$in_q3 = $this->db->insert('right_ans',$val3);
+					return $in_q3;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				return 0;
+			}
+		}
 	}
     
     ?>
