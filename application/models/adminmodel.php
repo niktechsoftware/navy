@@ -49,6 +49,14 @@
 			 $gt_ex_nm = $this->db->get('exam_name');
 			 return $gt_ex_nm;
 		}
+		public function question_data($select_exam,$select_test,$select_subject)
+		{
+			$this->db->where('exam_subject_id',$select_subject);
+			$this->db->where('exam_name_id',$select_test);
+			$this->db->where('exam_master_id',$select_exam);
+			$dx_q = $this->db->get('question_master');
+			return $dx_q;
+		}
 		public function select_exam_data($exam_id)
 		{
 			$this->db->where('exam_master_id',$exam_id);
@@ -93,6 +101,22 @@
 			{
 				return 0;
 			}
+		}
+		function delete_q($q_id)
+		{
+			$this->db->where('id',$q_id);
+			$dlt = $this->db->delete('question_master');
+			return $dlt;
+		}
+		function edit_q($q_id)
+		{
+			$this->db->where('id',$q_id);
+			return $q = $this->db->get('question_master')->row();
+		}
+		function ques_op($q_id)
+		{
+			$this->db->where('question_master_id',$q_id);
+			return $op = $this->db->get('question_ans')->row();
 		}
 	}
     

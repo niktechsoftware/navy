@@ -65,9 +65,4 @@ $("#select_exam").change(function(){
          $("#select_test").html(data);
     });
 });
-// $("#config_tst").click(function(){
-//     var exam_n = $('#q_nmbr').val();
-//     // var exam_n = $('#select_exam').val();
-//     // var exam_n = $('#select_exam').val();
-// });
 </script>

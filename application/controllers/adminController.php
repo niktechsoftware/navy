@@ -129,10 +129,16 @@ Class AdminController extends CI_Controller{
 	}
 	function create_ques()
 	{
+		$select_exam = $this->input->post('select_exam');
+		$select_test = $this->input->post('select_test');
+		$select_subject = $this->input->post('select_subject');
+
+		$data['dt_qt'] = $this->adminmodel->question_data($select_exam,$select_test,$select_subject);
+
 		$data['q_nmbr'] = $this->input->post('q_nmbr');
-		$data['select_exam'] = $this->input->post('select_exam');
-		$data['select_test'] = $this->input->post('select_test');
-		$data['select_subject'] = $this->input->post('select_subject');
+		$data['select_exam'] = $select_exam;
+		$data['select_test'] = $select_test;
+		$data['select_subject'] = $select_subject;
 	    $data['pageTitle'] = 'Configuration Test';
 		$data['smallTitle'] = 'Configuration Test';
 		$data['mainPage'] = 'Configuration Test';
@@ -180,6 +186,39 @@ Class AdminController extends CI_Controller{
 				}
 			}
 		
+	}
+	function delete_q()
+	{
+		$q_id = $this->input->post('ques_id');
+		$chk = $this->adminmodel->delete_q($q_id);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
+	function edit_q()
+	{
+		$q_id = $this->uri->segment(3);
+
+		$data['q_dt'] = $this->adminmodel->edit_q($q_id);
+		$data['q_op'] = $this->adminmodel->ques_op($q_id);
+		// $data['select_exam'] = $select_exam;
+		// $data['select_test'] = $select_test;
+		// $data['select_subject'] = $select_subject;
+	    $data['pageTitle'] = 'Configuration Test';
+		$data['smallTitle'] = 'Configuration Test';
+		$data['mainPage'] = 'Configuration Test';
+		$data['subPage'] = 'Configuration Test';
+		$data['title'] = 'Configuration Test Page';
+		$data['headerCss'] = 'headerCss/dashboardCss';
+		$data['footerJs'] = 'footerJs/customerJs';
+		$data['mainContent'] = 'exam/edit_ques';
+		$this->load->view("includes/mainContent", $data);	
+
 	}
 }
 ?>
