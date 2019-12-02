@@ -54,6 +54,19 @@ Class AdminController extends CI_Controller{
 			}
 		}		
 	}
+	public function delete_exam()
+	{
+		$exam_id = $this->input->post('exam_id');
+		$chk = $this->adminmodel->delete_exam($exam_id);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
 	public function insert_subject()
 	{
 		$sub_ject = $this->input->post('sub_ject');
@@ -74,6 +87,19 @@ Class AdminController extends CI_Controller{
 			{
 				echo "0";
 			}
+		}
+	}
+	public function delete_subject()
+	{
+		$sub_id = $this->input->post('sub_id');
+		$chk = $this->adminmodel->delete_subject($sub_id);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
 		}
 	}
 	public function create_test()
@@ -101,7 +127,19 @@ Class AdminController extends CI_Controller{
 			}
 		}
 	}
-	
+	public function delete_test()
+	{
+		$test_id = $this->input->post('test_id');
+		$chk = $this->adminmodel->delete_test($test_id);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
 	function config_test()
 	{
 		$data['gt_val'] = $this->adminmodel->exam_name();
@@ -219,6 +257,34 @@ Class AdminController extends CI_Controller{
 		$data['mainContent'] = 'exam/edit_ques';
 		$this->load->view("includes/mainContent", $data);	
 
+	}
+	function update_exam()
+	{
+		$exam_id = $this->input->post('exam_id');
+		$exam_n = $this->input->post('exam_n');
+		$chk = $this->adminmodel->update_exam($exam_id,$exam_n);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
+	function update_sub()
+	{
+		$sub_id = $this->input->post('sub_id');
+		$sub_n = $this->input->post('sub_n');
+		$chk = $this->adminmodel->update_sub($sub_id,$sub_n);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
 	}
 }
 ?>

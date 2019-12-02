@@ -38,6 +38,7 @@
                                                         <tr>
                                                             <th class="text-center"> #</th>
                                                             <th class="text-center">Exam Name</th>
+                                                            <th class="text-center">Action</th>
                                                             <th class="text-center">Action</th>                     
                                                         </tr>
                                                     </thead>
@@ -47,10 +48,62 @@
                                                             { ?>
                                                             <tr>
                                                                 <td class="text-center"><?= $i;?></td>
-                                                                <td class="text-center"><?= $dadt->name;?></td>
-                                                                <td class="text-center"><input type="button" value="Delete" id="dlt<?= $i;?>" class="btn btn-danger"/></td>
+                                                                <input type="hidden" id="ex_id<?= $i;?>" value="<?= $dadt->id;?>">
+                                                                <td id ="ex_id<?= $i;?>" class="text-center">
+                                                                    <label id="sh_ex<?= $i;?>" ><?php echo $dadt->name;?></label>
+                                                                    <input type="text" id="edit_ex_id<?= $i;?>" value="<?php echo $dadt->name;?>">
+                                                                </td>
+                                                                
+                                                                <td class="text-center">
+                                                                <input type="button" value="Edit" id="edt_exam<?= $i;?>" class="btn btn-warning"/>
+                                                                <input type="button" value="Update" id="update_exm<?= $i;?>" class="btn btn-warning"/>
+                                                                </td>
+                                                                <td class="text-center"><input type="button" value="Delete" id="dlt_exam<?= $i;?>" class="btn btn-danger"/></td>
                                                             </tr>
-
+                                                                <script>
+                                                                    $("#edit_ex_id<?= $i;?>").hide();
+                                                                    $("#update_exm<?= $i;?>").hide();
+                                                                    $("#edt_exam<?= $i;?>").show();
+                                                                    $("#sh_ex<?= $i;?>").show();
+                                                                    $("#dlt_exam<?= $i;?>").click(function(){
+                                                                        var exam_id = $("#ex_id<?= $i;?>").val();
+                                                                        $.post("<?= site_url();?>/adminController/delete_exam",{exam_id : exam_id},function(data){
+                                                                            if(data==1)
+                                                                            {
+                                                                                alert("Exam Deleted Successfully");
+                                                                                $("#table1_div").load(location.href + " #table1_div");
+                                                                            }
+                                                                            else if(data==0)
+                                                                            {
+                                                                                alert("Exam Not Deleted");
+                                                                            }
+                                                                        });
+                                                                    });
+                                                                    $("#edt_exam<?= $i;?>").click(function(){
+                                                                        // alert("3");
+                                                                        $("#edit_ex_id<?= $i;?>").show();
+                                                                        $("#update_exm<?= $i;?>").show();
+                                                                        $("#edt_exam<?= $i;?>").hide();
+                                                                        $("#sh_ex<?= $i;?>").hide();
+                                                                            $("#update_exm<?= $i;?>").click(function(){
+                                                                                // alert("3");
+                                                                                var exam_n =  $("#edit_ex_id<?= $i;?>").val();
+                                                                                var exam_id = $("#ex_id<?= $i;?>").val();
+                                                                                // alert(exam_id);
+                                                                                $.post("<?= site_url();?>/adminController/update_exam",{exam_n : exam_n,exam_id:exam_id},function(data){
+                                                                                    if(data==1)
+                                                                                    {
+                                                                                        alert("Update Successfully");
+                                                                                        location.reload();
+                                                                                    }
+                                                                                    else if(data==0)
+                                                                                    {
+                                                                                        alert("Not Updated");
+                                                                                    }
+                                                                                });
+                                                                            });
+                                                                    });
+                                                                </script>
                                                         <?php $i++;  }
                                                             ?>
                                                     </tbody>
@@ -80,10 +133,67 @@
                                                             { ?>
                                                             <tr>
                                                                 <td class="text-center"><?= $i;?></td>
-                                                                <td class="text-center"><?= $dt_sub->subject_name;?></td>
+                                                                <input type="hidden" id="sub_id<?= $i;?>" value="<?= $dt_sub->id;?>">
+                                                                <td class="text-center">
+                                                                    <label id="sh_sub<?= $i;?>"><?= $dt_sub->subject_name;?></label>
+                                                                    <input type="text" id="edit_sub_id<?= $i;?>" value="<?= $dt_sub->subject_name;?>">
+                                                                </td>
+                                                               
+                                                                <td class="text-center">
+                                                                    <input type="button" value="Edit" id="edt_sub<?= $i;?>" class="btn btn-warning"/>
+                                                                    <input type="button" value="Update" id="update_sub<?= $i;?>" class="btn btn-warning"/>
+                                                                </td>
                                                                 <td class="text-center"><input type="button" value="Delete" id="dlt_sub<?= $i;?>" class="btn btn-danger"/></td>
                                                             </tr>
+                                                            <script>
+                                                                        $("#edit_sub_id<?= $i;?>").hide();
+                                                                        $("#update_sub<?= $i;?>").hide();
+                                                                        $("#edt_sub<?= $i;?>").show();
+                                                                        $("#sh_sub<?= $i;?>").show();
 
+                                                                    $("#dlt_sub<?= $i;?>").click(function(){
+                                                                        var sub_id = $("#sub_id<?= $i;?>").val();
+                                                                        $.post("<?= site_url();?>/adminController/delete_subject",{sub_id : sub_id},function(data){
+                                                                            if(data==1)
+                                                                            {
+                                                                                alert("Subject Deleted Successfully");
+                                                                                // location.reload();
+                                                                                $("#table2_div").load(location.href + " #table2_div");
+                                                                            }
+                                                                            else if(data==0)
+                                                                            {
+                                                                                alert("Subject Not Deleted");
+                                                                            }
+                                                                        });
+                                                                       
+                                                                    });
+                                                                        
+                                                                    $("#edt_sub<?= $i;?>").click(function(){
+                                                                        // alert("3");
+                                                                        $("#edit_sub_id<?= $i;?>").show();
+                                                                        $("#update_sub<?= $i;?>").show();
+                                                                        $("#edt_sub<?= $i;?>").hide();
+                                                                        $("#sh_sub<?= $i;?>").hide();
+                                                                            $("#update_sub<?= $i;?>").click(function(){
+                                                                                var sub_n =  $("#edit_sub_id<?= $i;?>").val();
+                                                                                var sub_id = $("#sub_id<?= $i;?>").val();
+                                                                                // alert(sub_id);
+                                                                                // alert(sub_n);
+                                                                                $.post("<?php echo site_url();?>/adminController/update_sub",{sub_n : sub_n,sub_id : sub_id},function(data){
+                                                                                //    alert(data);
+                                                                                    if(data==1)
+                                                                                    {
+                                                                                        alert("Update Successfully");
+                                                                                        location.reload();
+                                                                                    }
+                                                                                    else if(data==0)
+                                                                                    {
+                                                                                        alert("Not Updated");
+                                                                                    }
+                                                                                });
+                                                                            });
+                                                                    });
+                                                                </script>
                                                         <?php $i++;  }
                                                             ?>
                                                     </tbody>
@@ -125,13 +235,69 @@
                                                             foreach($dt_test->result() as $data_test)
                                                             { ?>
                                                             <tr>
-                                                                <td class="text-center"><?= $i;?></td>                                                               
+                                                                <td class="text-center"><?= $i;?></td>   
+                                                                <input type="hidden" id="test_id<?= $i;?>" value="<?= $data_test->id;?>">                                                            
                                                                 <?php $this->db->where('id',$data_test->exam_master_id);
                                                                 $dx_exam = $this->db->get('exam_master'); ?>
                                                                 <td class="text-center"><?php if($dx_exam->num_rows()>0){ echo $dx_exam->row()->name; } else { echo "N/A"; } ?></td>
-                                                                <td class="text-center"><?= $data_test->exam_name;?></td>
+                                                                <td class="text-center">
+                                                                    <label id="sh_tst<?= $i;?>"><?= $data_test->exam_name;?></label>
+                                                                    <input type="text" id="edit_tst_id<?= $i;?>" value="<?= $data_test->exam_name;?>">
+                                                                </td>
+                                                               
+                                                                <td class="text-center">
+                                                                    <input type="button" value="Edit" id="edt_test<?= $i;?>" class="btn btn-warning"/>
+                                                                    <input type="button" value="Edit" id="update_test<?= $i;?>" class="btn btn-warning"/>
+                                                                </td>
                                                                 <td class="text-center"><input type="button" value="Delete" id="dlt_test<?= $i;?>" class="btn btn-danger"/></td>
                                                             </tr>
+                                                            <script>
+                                                                        $("#edit_sub_id<?= $i;?>").hide();
+                                                                        $("#update_sub<?= $i;?>").hide();
+                                                                        $("#edt_sub<?= $i;?>").show();
+                                                                        $("#sh_sub<?= $i;?>").show();
+                                                                            $("#edt_test<?= $i;?>").click(function(){
+                                                                            // alert("3");
+                                                                                $("#edit_sub_id<?= $i;?>").show();
+                                                                                $("#update_sub<?= $i;?>").show();
+                                                                                $("#edt_sub<?= $i;?>").hide();
+                                                                                $("#sh_sub<?= $i;?>").hide();
+                                                                                    $("#update_sub<?= $i;?>").click(function(){
+                                                                                var sub_n =  $("#edit_sub_id<?= $i;?>").val();
+                                                                                var sub_id = $("#sub_id<?= $i;?>").val();
+                                                                                // alert(sub_id);
+                                                                                // alert(sub_n);
+                                                                                $.post("<?php echo site_url();?>/adminController/update_sub",{sub_n : sub_n,sub_id : sub_id},function(data){
+                                                                                //    alert(data);
+                                                                                    if(data==1)
+                                                                                    {
+                                                                                        alert("Update Successfully");
+                                                                                        location.reload();
+                                                                                    }
+                                                                                    else if(data==0)
+                                                                                    {
+                                                                                        alert("Not Updated");
+                                                                                    }
+                                                                                });
+                                                                            });
+                                                                    });
+                                                                    $("#dlt_test<?= $i;?>").click(function(){
+                                                                        var test_id = $("#test_id<?= $i;?>").val();
+                                                                        $.post("<?= site_url();?>/adminController/delete_test",{test_id : test_id},function(data){
+                                                                            if(data==1)
+                                                                            {
+                                                                                alert("Test Deleted Successfully");
+                                                                                // location.reload();
+                                                                                $("#table3_div").load(location.href + " #table3_div");
+                                                                            }
+                                                                            else if(data==0)
+                                                                            {
+                                                                                alert("Test Not Deleted");
+                                                                            }
+                                                                        });
+                                                                       
+                                                                    });
+                                                                </script>
 
                                                         <?php $i++;  }
                                                             ?>
@@ -177,6 +343,7 @@ $("#btn_sub").click(function(){
         if(data==1)
         {
             alert("Subject Name Created Successfully.");
+            // location.reload();
             $("#table2_div").load(location.href + " #table2_div");
         }
         else if(data==0)
@@ -210,4 +377,5 @@ $("#btn_tst").click(function(){
         }
     });
 });
+
 </script>

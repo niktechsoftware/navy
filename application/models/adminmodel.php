@@ -118,6 +118,33 @@
 			$this->db->where('question_master_id',$q_id);
 			return $op = $this->db->get('question_ans')->row();
 		}
+		function delete_exam($exam_id)
+		{
+			$this->db->where('id',$exam_id);
+			return $dlt = $this->db->delete('exam_master');
+		}
+		function delete_subject($sub_id)
+		{
+			$this->db->where('id',$sub_id);
+			return $dlt = $this->db->delete('exam_subjects');
+		}
+		function delete_test($test_id)
+		{
+			$this->db->where('id',$test_id);
+			return $dlt = $this->db->delete('exam_name');
+		}
+		function update_exam($exam_id,$exam_n)
+		{
+			$val = array('name'=>$exam_n);
+			$this->db->where('id',$exam_id);
+			return $updt = $this->db->update('exam_master',$val); 
+		}
+		function update_sub($sub_id,$sub_n)
+		{
+			$val = array('subject_name'=>$sub_n);
+			$this->db->where('id',$sub_id);
+			return $updt = $this->db->update('exam_subjects',$val); 
+		}
 	}
     
     ?>
