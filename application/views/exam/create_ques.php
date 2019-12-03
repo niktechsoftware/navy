@@ -120,7 +120,7 @@
                                                      $dx_q = $this->db->get('right_ans'); ?>
                                                      <input type="hidden" id="questt_id<?= $i;?>" value="<?= $data_q->id;?>">
                                                     <td class="text-center"><?php if($dx_q->num_rows()>0){ ?><textarea readonly> <?php echo $dx_q->row()->right_answer; ?></textarea> <?php } else { ?> <textarea readonly> <?php echo "N/A"; }  ?></textarea></td>
-                                                    <td class="text-center"><a href="<?= base_url();?>index.php/adminController/edit_q/<?= $data_q->id;?>" id="edit_ques<?= $i;?>" class="btn btn-warning">Edit</a></td>
+                                                    <td class="text-center"><a target="_blank" href="<?= base_url();?>index.php/adminController/edit_q/<?= $data_q->id;?>" id="edit_ques<?= $i;?>" class="btn btn-warning">Edit</a></td>
                                                     <td class="text-center"><input type="button" value="Delete" id="dlt_ques<?= $i;?>" class="btn btn-danger"/></td>
                                                 </tr>
                                                 <script>
@@ -174,60 +174,59 @@ $("#submit_q").click(function(){
         var exam_subject_id = <?= $select_subject;?>;
     if((ques.length>0) && (($('#a1').val()).length>0) && (($('#b1').val()).length>0) && (($('#c1').val()).length>0) && (($('#d1').val()).length>0) && (($('#e1').val()).length>0))
     {
-        if(sel == "")
+        if(sel == "" || sel == 0)
         {
         alert("Please select anwser");   
         }
-        else if(sel == 0)
+        else
         {
-        alert("Please select anwser");   
+            if(sel == 1)
+            {
+            var ans = $('#a1').val();;  
+            } 
+            else if(sel == 2)
+            {
+                var ans = $('#b1').val();
+            } 
+            else if(sel == 3)
+            {
+                var ans = $('#c1').val();
+            } 
+            else if(sel == 4)
+            {
+                var ans = $('#d1').val();
+            } 
+            else if(sel == 5)
+            {
+                var ans = $('#e1').val();
+            } 
+    
+            $.post("<?php echo site_url();?>/adminController/insert_question", {
+                ques : ques,a:a,b:b,c:c,d:d,e:e,ans:ans,
+                exam_master_id :exam_master_id,
+                exam_name_id : exam_name_id,
+                exam_subject_id : exam_subject_id
+                }, function(data){
+                // alert(data);
+                if(data==1)
+                {
+                    alert("Question Created Successfully.");
+                    // $("#table3_div").load(location.href + "#table3_div");
+                    // $("#table4_div").load(location.href + " #table4_div");
+                    // $("#m_div").load(location.href + " #m_div");
+                    location.reload();
+                }
+                else if(data==0)
+                {
+                    alert("Question Not Created");
+                }
+                else if(data==3)
+                {
+                    alert("Question Already exists");
+                }
+            
+            });
         }
-        else if(sel == 1)
-        {
-        var ans = $('#a1').val();;  
-        } 
-        else if(sel == 2)
-        {
-            var ans = $('#b1').val();
-        } 
-        else if(sel == 3)
-        {
-            var ans = $('#c1').val();
-        } 
-        else if(sel == 4)
-        {
-            var ans = $('#d1').val();
-        } 
-        else if(sel == 5)
-        {
-            var ans = $('#e1').val();
-        } 
-   
-        $.post("<?php echo site_url();?>/adminController/insert_question", {
-            ques : ques,a:a,b:b,c:c,d:d,e:e,ans:ans,
-            exam_master_id :exam_master_id,
-            exam_name_id : exam_name_id,
-            exam_subject_id : exam_subject_id
-            }, function(data){
-            // alert(data);
-            if(data==1)
-            {
-                alert("Question Created Successfully.");
-                // $("#table3_div").load(location.href + "#table3_div");
-                // $("#table4_div").load(location.href + " #table4_div");
-                // $("#m_div").load(location.href + " #m_div");
-                location.reload();
-            }
-            else if(data==0)
-            {
-                alert("Question Not Created");
-            }
-            else if(data==3)
-            {
-                alert("Question Already exists");
-            }
-        
-        });
     }
     else
     {

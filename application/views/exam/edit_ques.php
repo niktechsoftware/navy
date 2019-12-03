@@ -13,25 +13,30 @@
                             </div>
                             <div class="card-body">                                
                                 <!-- //////////////////create test//////////////////////// -->
-                                <??>
-                              
-                                <div class="row">
+                                <?php if($q_dt->num_rows()>0)
+                                {
+                                    $q_dt2 = $q_dt->row();
+                                    if($q_op->num_rows()>0)
+                                    {
+                                        $q_op2 = $q_op->row(); ?>
+                                        <div class="row">
+                                        <input type="hidden" id="q_id" value="<?= $q_dt2->id;?>">
                                     <div class="col-md-3"><label style="float:right"><b>Question :</b></label></div>
-                                    <div class="col-md-9"><textarea id="ques" class="form-control"><?= $q_dt->question;?></textarea></div>
+                                    <div class="col-md-9"><textarea id="ques_up" class="form-control"><?= $q_dt2->question;?></textarea></div>
                                     <label style="margin-left:45px;"><b>Question Options :<b></label><br>
                                    
                                 </div>
 
                                 <div class="row" style="margin-left:45px;">
                                     <div class="col-md-6">
-                                        A:<input class="form-control" type="text" value=<?= set_values($q_op->A);?> id="a1"/><br>
-                                        B:<input class="form-control" type="text" value=<?= set_values($q_op->B);?> id="b1"/><br>  
-                                        C:<input class="form-control" type="text" value=<?= set_values($q_op->C);?> id="c1"/><br>
+                                        A:<input class="form-control" type="text" value=<?= $q_op2->A;?> id="a1_up"/><br>
+                                        B:<input class="form-control" type="text" value=<?= $q_op2->B;?> id="b1_up"/><br>  
+                                        C:<input class="form-control" type="text" value=<?= $q_op2->C;?> id="c1_up"/><br>
                                     </div>
                                     <div class="col-md-6">                                                                                                         
-                                        D:<input class="form-control" type="text" value=<?= set_value($q_op->D);?> id="d1"/><br>
-                                        E:<input class="form-control" type="text" value=<?= set_value($q_op->E);?> id="e1"/><br>   
-                                        Select Answer:<select class="form-control" id="sel_ct" style="width:150px">
+                                        D:<input class="form-control" type="text" value=<?= $q_op2->D;?> id="d1_up"/><br>
+                                        E:<input class="form-control" type="text" value=<?= $q_op2->E;?> id="e1_up"/><br>   
+                                        Select Answer:<select class="form-control" id="sel_ct_up" style="width:150px">
                                             <option value="0">--Select--<option>
                                             <option value="1">A</option>
                                             <option value="2">B</option>
@@ -42,7 +47,21 @@
                                     </div>
                                    
                                 </div>
-                                <center><input style="" type="button" value="Edit Question" id="edit_q" class="btn btn-info"/></center>                                         
+                                <center><input type="button" value="Update Question" id="update_ques" class="btn btn-success"/></center>
+                                   <?php }
+                                    else
+                                    {
+                                        echo "Data Not Available.";
+                                    }
+                                }
+                                else
+                                {
+                                    echo "Data Not Available.";
+                                }
+
+                                ?>
+                              
+                                                                         
                                 <!-- ///////// -->
                                
                             </div>
@@ -54,77 +73,64 @@
 	</div>
 </div>
 <script>
-/////////////create test///////////////
 // alert("3");
-$("#edit_q").click(function(){
-   
-        var ques = $('#ques').val();
-        var a = $('#a1').val();
-        var b = $('#b1').val();
-        var c = $('#c1').val();
-        var d = $('#d1').val();
-        var e = $('#e1').val();
-        var sel = $('#sel_ct').val();
-       
-        var exam_master_id = <?= $select_exam;?>;
-        var exam_name_id = <?= $select_test;?>;
-        var exam_subject_id = <?= $select_subject;?>;
-    if((ques.length>0) && (($('#a1').val()).length>0) && (($('#b1').val()).length>0) && (($('#c1').val()).length>0) && (($('#d1').val()).length>0) && (($('#e1').val()).length>0))
+// alert("3");
+$("#update_ques").click(function(){
+        var ques = $('#ques_up').val();
+        var a = $('#a1_up').val();
+        var b = $('#b1_up').val();
+        var c = $('#c1_up').val();
+        var d = $('#d1_up').val();
+        var e = $('#e1_up').val();
+        var sel = $('#sel_ct_up').val();
+        var q_id = $("#q_id").val();
+        // alert(ques+" "+a+" "+b+" "+c+" "+d+" "+e+" "+sel+" "+q_id);
+    if((ques.length>0) && (a.length>0) && (b.length>0) && (c.length>0) && (d.length>0) && (e.length>0))
     {
-        if(sel == "")
+        if(sel == "" || sel == 0)
         {
         alert("Please select anwser");   
         }
-        else if(sel == 0)
+        else
         {
-        alert("Please select anwser");   
-        }
-        else if(sel == 1)
+            if(sel == 1)
         {
-        var ans = $('#a1').val();;  
+        var ans = $('#a1_up').val();;  
         } 
         else if(sel == 2)
         {
-            var ans = $('#b1').val();
+            var ans = $('#b1_up').val();
         } 
         else if(sel == 3)
         {
-            var ans = $('#c1').val();
+            var ans = $('#c1_up').val();
         } 
         else if(sel == 4)
         {
-            var ans = $('#d1').val();
+            var ans = $('#d1_up').val();
         } 
         else if(sel == 5)
         {
-            var ans = $('#e1').val();
+            var ans = $('#e1_up').val();
         } 
-   
-        $.post("<?php echo site_url();?>/adminController/insert_question", {
-            ques : ques,a:a,b:b,c:c,d:d,e:e,ans:ans,
-            exam_master_id :exam_master_id,
-            exam_name_id : exam_name_id,
-            exam_subject_id : exam_subject_id
+        
+        $.post("<?php echo site_url();?>/adminController/update_question", {
+            ques : ques,a:a,b:b,c:c,d:d,e:e,ans:ans,q_id:q_id
             }, function(data){
             // alert(data);
             if(data==1)
             {
-                alert("Question Created Successfully.");
-                // $("#table3_div").load(location.href + "#table3_div");
-                // $("#table4_div").load(location.href + " #table4_div");
-                // $("#m_div").load(location.href + " #m_div");
+                alert("Question Update Successfully.");
                 location.reload();
             }
             else if(data==0)
             {
-                alert("Question Not Created");
-            }
-            else if(data==3)
-            {
-                alert("Question Already exists");
+                alert("Question Not Updated");
             }
         
         });
+        }
+       
     }
     else
     {

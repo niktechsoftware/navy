@@ -111,12 +111,12 @@
 		function edit_q($q_id)
 		{
 			$this->db->where('id',$q_id);
-			return $q = $this->db->get('question_master')->row();
+			return $q = $this->db->get('question_master');
 		}
 		function ques_op($q_id)
 		{
 			$this->db->where('question_master_id',$q_id);
-			return $op = $this->db->get('question_ans')->row();
+			return $op = $this->db->get('question_ans');
 		}
 		function delete_exam($exam_id)
 		{
@@ -144,6 +144,44 @@
 			$val = array('subject_name'=>$sub_n);
 			$this->db->where('id',$sub_id);
 			return $updt = $this->db->update('exam_subjects',$val); 
+		}
+		function update_test($test_id,$test_n)
+		{
+			$val = array('exam_name'=>$test_n);
+			$this->db->where('id',$test_id);
+			return $updt = $this->db->update('exam_name',$val); 
+		}
+		function update_ques($ques,$q_id,$ans,$a,$b,$c,$d,$e)
+		{
+			$val1 = array('question'=>$ques);
+			$this->db->where('id',$q_id);
+			$up_q1 = $this->db->update('question_master',$val1);
+			if($up_q1)
+			{
+				$val2 = array(
+					'A'=>$a,
+					'B'=>$b,
+					'C'=>$c,
+					'D'=>$d,
+					'E'=>$e);
+				$this->db->where('question_master_id',$q_id);
+				$up_q2 = $this->db->update('question_ans',$val2);
+				if($up_q2)
+				{
+					$val3 = array('right_answer'=>$ans);
+					$this->db->where('question_master_id',$q_id);
+					$up_q3 = $this->db->update('right_ans',$val3);
+					return $up_q3;
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				return 0;
+			}
 		}
 	}
     

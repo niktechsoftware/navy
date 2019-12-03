@@ -244,9 +244,6 @@ Class AdminController extends CI_Controller{
 
 		$data['q_dt'] = $this->adminmodel->edit_q($q_id);
 		$data['q_op'] = $this->adminmodel->ques_op($q_id);
-		// $data['select_exam'] = $select_exam;
-		// $data['select_test'] = $select_test;
-		// $data['select_subject'] = $select_subject;
 	    $data['pageTitle'] = 'Configuration Test';
 		$data['smallTitle'] = 'Configuration Test';
 		$data['mainPage'] = 'Configuration Test';
@@ -277,6 +274,40 @@ Class AdminController extends CI_Controller{
 		$sub_id = $this->input->post('sub_id');
 		$sub_n = $this->input->post('sub_n');
 		$chk = $this->adminmodel->update_sub($sub_id,$sub_n);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
+	function update_tst()
+	{
+		$test_id = $this->input->post('tesst_id');
+		$test_n = $this->input->post('test_n');
+		$chk = $this->adminmodel->update_test($test_id,$test_n);
+		if($chk)
+		{
+			echo "1";
+		}
+		else
+		{
+			echo "0";
+		}
+	}
+	function update_question()
+	{
+		$ques = $this->input->post("ques");
+		$a = $this->input->post("a");
+		$b = $this->input->post("b");
+		$c = $this->input->post("c");
+		$d = $this->input->post("d");
+		$e = $this->input->post("e");
+		$ans = $this->input->post("ans");
+		$q_id = $this->input->post("q_id");
+		$chk = $this->adminmodel->update_ques($ques,$q_id,$ans,$a,$b,$c,$d,$e);
 		if($chk)
 		{
 			echo "1";

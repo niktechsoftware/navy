@@ -241,46 +241,46 @@
                                                                 $dx_exam = $this->db->get('exam_master'); ?>
                                                                 <td class="text-center"><?php if($dx_exam->num_rows()>0){ echo $dx_exam->row()->name; } else { echo "N/A"; } ?></td>
                                                                 <td class="text-center">
-                                                                    <label id="sh_tst<?= $i;?>"><?= $data_test->exam_name;?></label>
-                                                                    <input type="text" id="edit_tst_id<?= $i;?>" value="<?= $data_test->exam_name;?>">
+                                                                    <label id="sh_test<?= $i;?>"><?= $data_test->exam_name;?></label>
+                                                                    <input type="text" id="edit_test_id<?= $i;?>" value="<?= $data_test->exam_name;?>">
                                                                 </td>
                                                                
                                                                 <td class="text-center">
                                                                     <input type="button" value="Edit" id="edt_test<?= $i;?>" class="btn btn-warning"/>
-                                                                    <input type="button" value="Edit" id="update_test<?= $i;?>" class="btn btn-warning"/>
+                                                                    <input type="button" value="Update" id="update_test<?= $i;?>" class="btn btn-warning"/>
                                                                 </td>
                                                                 <td class="text-center"><input type="button" value="Delete" id="dlt_test<?= $i;?>" class="btn btn-danger"/></td>
                                                             </tr>
                                                             <script>
-                                                                        $("#edit_sub_id<?= $i;?>").hide();
-                                                                        $("#update_sub<?= $i;?>").hide();
-                                                                        $("#edt_sub<?= $i;?>").show();
-                                                                        $("#sh_sub<?= $i;?>").show();
+                                                                        $("#edit_test_id<?= $i;?>").hide();
+                                                                        $("#update_test<?= $i;?>").hide();
+                                                                        $("#edt_test<?= $i;?>").show();
+                                                                        $("#sh_test<?= $i;?>").show();
                                                                             $("#edt_test<?= $i;?>").click(function(){
                                                                             // alert("3");
-                                                                                $("#edit_sub_id<?= $i;?>").show();
-                                                                                $("#update_sub<?= $i;?>").show();
-                                                                                $("#edt_sub<?= $i;?>").hide();
-                                                                                $("#sh_sub<?= $i;?>").hide();
-                                                                                    $("#update_sub<?= $i;?>").click(function(){
-                                                                                var sub_n =  $("#edit_sub_id<?= $i;?>").val();
-                                                                                var sub_id = $("#sub_id<?= $i;?>").val();
-                                                                                // alert(sub_id);
-                                                                                // alert(sub_n);
-                                                                                $.post("<?php echo site_url();?>/adminController/update_sub",{sub_n : sub_n,sub_id : sub_id},function(data){
-                                                                                //    alert(data);
-                                                                                    if(data==1)
-                                                                                    {
-                                                                                        alert("Update Successfully");
-                                                                                        location.reload();
-                                                                                    }
-                                                                                    else if(data==0)
-                                                                                    {
-                                                                                        alert("Not Updated");
-                                                                                    }
+                                                                                $("#edit_test_id<?= $i;?>").show();
+                                                                                $("#update_test<?= $i;?>").show();
+                                                                                $("#edt_test<?= $i;?>").hide();
+                                                                                $("#sh_test<?= $i;?>").hide();
+                                                                                $("#update_test<?= $i;?>").click(function(){
+                                                                                    var test_n =  $("#edit_test_id<?= $i;?>").val();
+                                                                                    var tesst_id = $("#test_id<?= $i;?>").val();
+                                                                                    // alert(test_n);
+                                                                                    // alert(tesst_id);
+                                                                                    $.post("<?php echo site_url();?>/adminController/update_tst",{test_n : test_n ,tesst_id : tesst_id},function(data){
+                                                                                        // alert(data);
+                                                                                        if(data==1)
+                                                                                        {
+                                                                                            alert("Update Successfully");
+                                                                                            location.reload();
+                                                                                        }
+                                                                                        else if(data==0)
+                                                                                        {
+                                                                                            alert("Not Updated");
+                                                                                        }
+                                                                                    });
                                                                                 });
                                                                             });
-                                                                    });
                                                                     $("#dlt_test<?= $i;?>").click(function(){
                                                                         var test_id = $("#test_id<?= $i;?>").val();
                                                                         $.post("<?= site_url();?>/adminController/delete_test",{test_id : test_id},function(data){
