@@ -317,5 +317,39 @@ Class AdminController extends CI_Controller{
 			echo "0";
 		}
 	}
+	function question()
+	{
+		$data['pageTitle'] = 'Configuration Test';
+		$data['smallTitle'] = 'Configuration Test';
+		$data['mainPage'] = 'Configuration Test';
+		$data['subPage'] = 'Configuration Test';
+		$data['title'] = 'Configuration Test Page';
+		$data['headerCss'] = 'headerCss/dashboardCss';
+		$data['footerJs'] = 'footerJs/customerJs';
+		$data['mainContent'] = 'exam/question';
+		$this->load->view("includes/mainContent", $data);	
+	}
+	function new_ques()
+	{
+		echo $ques = $this->input->post("ques1")."<br>";
+		echo $qf1 = $_FILES['qf1']['name']."<br>";
+		echo $qf2 = $_FILES['qf2']['name']."<br>";
+		echo $qf3 = $_FILES['qf3']['name']."<br>";
+		echo $qf4 = $_FILES['qf4']['name']."<br>";
+		echo $af1 = $_FILES['af1']['name']."<br>";
+		echo $af2 = $_FILES['af2']['name']."<br>";
+		echo $af3 = $_FILES['af3']['name']."<br>";
+		echo $af4 = $_FILES['af4']['name']."<br>";
+		echo $af5 = $_FILES['af5']['name'];
+
+		for()
+		{
+			$ph_name = str_replace(' ','',$qf.$i);
+			$config['upload_path'] = ;
+			$config['allowed_type'] = 'jpg|jpeg|png|bmp';
+			$config['max_size'] = 1024;
+			$config['file_name'] = $ph_name;
+		}
+	}
 }
 ?>

@@ -10,11 +10,7 @@
             <li>
               <a href="<?php echo base_url();?>index.php/adminController/config_test"><i data-feather="monitor"></i><span>Configuration Test</span></a>
             </li>
-            
-         
-               
-                
-          
-            
-           
+            <li>
+              <a href="<?php echo base_url();?>index.php/adminController/question"><i data-feather="monitor"></i><span>Question</span></a>
+            </li>                                        
 </ul>

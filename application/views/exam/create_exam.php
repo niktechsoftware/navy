@@ -324,7 +324,7 @@ $("#b_e").click(function(){
         if(data==1)
         {
             alert("Exam Name Created Successfully.");
-            $("#table1_div").load(location.href + " #table1_div");
+           location.reload();
         }
         else if(data==0)
         {
@@ -343,8 +343,8 @@ $("#btn_sub").click(function(){
         if(data==1)
         {
             alert("Subject Name Created Successfully.");
-            // location.reload();
-            $("#table2_div").load(location.href + " #table2_div");
+            location.reload();
+            // $("#table2_div").load(location.href + " #table2_div");
         }
         else if(data==0)
         {
@@ -365,7 +365,8 @@ $("#btn_tst").click(function(){
         if(data==1)
         {
             alert("Test Created Successfully.");
-            $("#table3_div").load(location.href + " #table3_div");
+            location.reload();
+            // $("#table3_div").load(location.href + " #table3_div");
         }
         else if(data==0)
         {

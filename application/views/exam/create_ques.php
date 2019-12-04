@@ -79,7 +79,7 @@
                                         D:<input class="form-control" type="text" id="d1"/><br>
                                         E:<input class="form-control" type="text" id="e1"/><br>   
                                         Select Answer:<select class="form-control" id="sel_ct" style="width:150px">
-                                            <option value="0">--Select--<option>
+                                            <option value="0">--Select--</option>
                                             <option value="1">A</option>
                                             <option value="2">B</option>
                                             <option value="3">C</option>
