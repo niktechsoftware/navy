@@ -45,7 +45,7 @@
             <div class="card-statistic-3">
                 <div class="card-icon card-icon-large"><i class="fa fa-briefcase"></i></div>
                 <div class="card-content">
-                <h4 class="card-title">Total Practice Set</h4>
+                <h4 class="card-title">All Practice Set</h4>
                 <span><?php echo $dt_test->num_rows();?></span>
                 <div class="progress mt-1 mb-1" data-height="8">
                     <div class="progress-bar l-bg-orange" role="progressbar" data-width="<?php echo $dt_test->num_rows();?>%" aria-valuenow="25"

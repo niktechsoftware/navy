@@ -1,3 +1,21 @@
+<?php $uri=  $this->uri->segment(3);?>
+<script>
+    switch(<?= $uri;?>)
+    {
+        case 1:
+        alert("Question Submitted Successfully");
+        break;
+        case 2:
+        alert("Question Not Submitted");
+        break;
+        case 3:
+        alert("Question And Image Not Submitted");
+        break;
+        case 0:
+        alert("please select answer");
+        break;
+    }
+</script>
 <div class="main-content">
     <div class="section">
         <div class="section-body">
@@ -10,6 +28,7 @@
                         <div class="card">
                             <div class="card-header">
                                 <h4>Create<code> Question</code></h4>
+                                <a href="<?= base_url();?>index.php/adminController/img_questions">img_questions</a>
                             </div>                            
                             <form method="post" action="<?= base_url();?>index.php/adminController/new_ques" enctype="multipart/form-data" >
                             <div class="card-body">
@@ -52,8 +71,8 @@
                                     <div class="col-md-6">
                                         D:<input type="file" id="af4_id" name="af4" class="form-control" required><br>
                                         E:<input type="file" id="af5_id" name="af5" class="form-control" required><br>
-                                        Select Answer:<select class="form-control" name = "sel_ct" id="sel_ct" style="width:150px">
-                                            <option value="0">--Select--</option>
+                                        Select Answer:<select class="form-control" required name = "sel_ct" style="width:150px">
+                                            <option value="0" disabled selected>--Select--</option>
                                             <option value="1">A</option>
                                             <option value="2">B</option>
                                             <option value="3">C</option>

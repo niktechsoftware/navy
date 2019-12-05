@@ -331,25 +331,110 @@ Class AdminController extends CI_Controller{
 	}
 	function new_ques()
 	{
-		echo $ques = $this->input->post("ques1")."<br>";
-		echo $qf1 = $_FILES['qf1']['name']."<br>";
-		echo $qf2 = $_FILES['qf2']['name']."<br>";
-		echo $qf3 = $_FILES['qf3']['name']."<br>";
-		echo $qf4 = $_FILES['qf4']['name']."<br>";
-		echo $af1 = $_FILES['af1']['name']."<br>";
-		echo $af2 = $_FILES['af2']['name']."<br>";
-		echo $af3 = $_FILES['af3']['name']."<br>";
-		echo $af4 = $_FILES['af4']['name']."<br>";
-		echo $af5 = $_FILES['af5']['name'];
-
-		for()
+		$sel_ct = $this->input->post("sel_ct");
+		if($sel_ct != 0)
 		{
-			$ph_name = str_replace(' ','',$qf.$i);
-			$config['upload_path'] = ;
-			$config['allowed_type'] = 'jpg|jpeg|png|bmp';
-			$config['max_size'] = 1024;
-			$config['file_name'] = $ph_name;
+			$ques = $this->input->post("ques1");
+			$qf1 = $_FILES['qf1']['name'];
+			$qf2 = $_FILES['qf2']['name'];
+			$qf3 = $_FILES['qf3']['name'];
+			$qf4 = $_FILES['qf4']['name'];
+			$af1 = $_FILES['af1']['name'];
+			$af2 = $_FILES['af2']['name'];
+			$af3 = $_FILES['af3']['name'];
+			$af4 = $_FILES['af4']['name'];
+			$af5 = $_FILES['af5']['name'];
+			
+			switch($sel_ct)
+			{
+				case 1:
+				$ans = 'A';
+				break;
+				case 2:
+				$ans = 'B';
+				break;
+				case 3:
+				$ans = 'C';
+				break;
+				case 4:
+				$ans = 'D';
+				break;
+				case 5:
+				$ans = 'E';
+				break;
+			}
+			
+			for($i=1;$i<=4;$i++)
+			{
+				$image_path = realpath(APPPATH . '../assets/images/question_img');
+				$photo_name = str_replace(' ','',$_FILES['qf'.$i]['name']);
+				$config['upload_path'] = $image_path;
+				$config['allowed_types'] = 'gif|jpg|jpeg|png';
+				$config['max_size'] = '1024';
+				$config['file_name'] = $photo_name;
+				
+				if (!empty($_FILES['qf'.$i]['name']))
+				{
+					$this->upload->initialize($config);
+					if($this->upload->do_upload('qf'.$i)) 
+					{
+						// echo "Image Uploaded Successfully";
+					}
+					else
+					{
+						redirect('adminController/question/3');
+					}				
+				}
+			}
+			for($i=1;$i<=5;$i++)
+			{
+				$image_path = realpath(APPPATH . '../assets/images/question_img');
+				$photo_name = str_replace(' ','',$_FILES['af'.$i]['name']);
+				$config['upload_path'] = $image_path;
+				$config['allowed_types'] = 'gif|jpg|jpeg|png';
+				$config['max_size'] = '1024';
+				$config['file_name'] = $photo_name;
+				
+				if (!empty($_FILES['af'.$i]['name']))
+				{
+					$this->upload->initialize($config);
+					if($this->upload->do_upload('af'.$i)) 
+					{
+						// echo "Image Uploaded Successfully";
+					}
+					else
+					{
+						redirect('adminController/question/3');
+					}				
+				}
+			}
+			$chk = $this->adminmodel->insert_img_question($ques,$qf1,$qf2,$qf3,$qf4,$af1,$af2,$af3,$af4,$af5,$ans);
+			if($chk)
+			{
+				redirect('adminController/question/1');
+			}
+			else 
+			{
+				redirect('adminController/question/2');
+			}
 		}
+		else
+		{
+			redirect('adminController/question/0');
+		}
+		
+	}
+	function img_questions()
+	{
+		$data['pageTitle'] = 'Configuration Test';
+		$data['smallTitle'] = 'Configuration Test';
+		$data['mainPage'] = 'Configuration Test';
+		$data['subPage'] = 'Configuration Test';
+		$data['title'] = 'Configuration Test Page';
+		$data['headerCss'] = 'headerCss/dashboardCss';
+		$data['footerJs'] = 'footerJs/customerJs';
+		$data['mainContent'] = 'exam/img_questions';
+		$this->load->view("includes/mainContent", $data);	
 	}
 }
 ?>

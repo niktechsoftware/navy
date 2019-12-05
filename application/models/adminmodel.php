@@ -183,6 +183,22 @@
 				return 0;
 			}
 		}
+		function insert_img_question($ques,$qf1,$qf2,$qf3,$qf4,$af1,$af2,$af3,$af4,$af5,$ans)
+		{
+			$val = array('question'=>$ques,
+						'q_img1'=>$qf1,
+						'q_img2'=>$qf2,
+						'q_img3'=>$qf3,
+						'q_img4'=>$qf4,
+						'q_ans_img1'=>$af1,
+						'q_ans_img2'=>$af2,
+						'q_ans_img3'=>$af3,
+						'q_ans_img4'=>$af4,
+						'q_ans_img5'=>$af5,
+						'right_answer'=>$ans
+						);
+			return $in_q = $this->db->insert('question_images',$val);
+		}
 	}
     
     ?>
