@@ -1,3 +1,8 @@
+<!-- <script> -->
+
+
+<!-- </script> -->  
+ 
 <div class="main-content">
 	<div class="section">
 		<div class="section-body">
@@ -6,12 +11,21 @@
 					<div class="card">
 						<div class="card-header">
 							<h4>Update Question</h4>
+                            <div id="img_dv">img</div>   
+                                <div id="nrml_dv">normal</div>  
 						</div>
                         <div class="card">
                             <div class="card-header">
                                 <h4>Update<code> Question</code></h4>
                             </div>
-                            <div class="card-body">                                
+                            <div class="card-body">       
+                            <script>
+alert("1");
+                                            $("#nrml_dv").hide();
+                                            $("#img_dv").hide();
+                                            alert("3");
+                                           </script>
+                                             
                                 <!-- //////////////////create test//////////////////////// -->
                                 <?php if($q_dt->num_rows()>0)
                                 {
@@ -29,13 +43,13 @@
 
                                 <div class="row" style="margin-left:45px;">
                                     <div class="col-md-6">
-                                        A:<input class="form-control" type="text" value=<?= $q_op2->A;?> id="a1_up"/><br>
-                                        B:<input class="form-control" type="text" value=<?= $q_op2->B;?> id="b1_up"/><br>  
-                                        C:<input class="form-control" type="text" value=<?= $q_op2->C;?> id="c1_up"/><br>
+                                        A:<input class="form-control" type="text" value="<?= $q_op2->A;?>" id="a1_up"/><br>
+                                        B:<input class="form-control" type="text" value="<?= $q_op2->B;?>" id="b1_up"/><br>  
+                                        C:<input class="form-control" type="text" value="<?= $q_op2->C;?>" id="c1_up"/><br>
                                     </div>
                                     <div class="col-md-6">                                                                                                         
-                                        D:<input class="form-control" type="text" value=<?= $q_op2->D;?> id="d1_up"/><br>
-                                        E:<input class="form-control" type="text" value=<?= $q_op2->E;?> id="e1_up"/><br>   
+                                        D:<input class="form-control" type="text" value="<?= $q_op2->D;?>" id="d1_up"/><br>
+                                        E:<input class="form-control" type="text" value="<?= $q_op2->E;?>" id="e1_up"/><br>   
                                         Select Answer:<select class="form-control" id="sel_ct_up" style="width:150px">
                                             <option value="0">--Select--<option>
                                             <option value="1">A</option>

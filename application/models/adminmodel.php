@@ -27,6 +27,17 @@
 			 $gt = $this->db->get('exam_master');
 			 return $gt;
 		}
+		public function language()
+		{
+			$gt = $this->db->get('test_language');
+			return $gt;
+		}
+		public function select_language($lang_id)
+		{
+			// echo $lang_id."d";
+			$this->db->where('id',$lang_id);
+			return $lg = $this->db->get('test_language')->row();
+		}
 		public function insert_subject($sub_ject)
 		{
 			$val = array('subject_name'=>$sub_ject);
@@ -37,9 +48,10 @@
 			 $gt_sub = $this->db->get('exam_subjects');
 			 return $gt_sub;
 		}
-		public function create_test($test_name,$exam_id)
+		public function create_test($test_name,$exam_id,$lang_id)
 		{
 			$val = array('exam_master_id'=>$exam_id,
+						'test_language_id'=>$lang_id,
 						'exam_name'=>$test_name);
 			$cr_test = $this->db->insert('exam_name',$val);
 			return $cr_test;
@@ -57,9 +69,10 @@
 			$dx_q = $this->db->get('question_master');
 			return $dx_q;
 		}
-		public function select_exam_data($exam_id)
+		public function select_exam_data($exam_id,$lang_id)
 		{
 			$this->db->where('exam_master_id',$exam_id);
+			$this->db->where('test_language_id',$lang_id);
 			$this->db->group_by('exam_name');
 			$st_dt = $this->db->get('exam_name');
 			return $st_dt;
@@ -183,9 +196,36 @@
 				return 0;
 			}
 		}
-		function insert_img_question($ques,$qf1,$qf2,$qf3,$qf4,$af1,$af2,$af3,$af4,$af5,$ans)
+		function insert_img_question($ques,$exam_name_id,$exam_subject_id,$exam_master_id,$qf1,$qf2,$qf3,$qf4,$af1,$af2,$af3,$af4,$af5,$ans,$op_txt1,$op_txt2,$op_txt3,$op_txt4,$op_txt5)
 		{
-			$val = array('question'=>$ques,
+			$val1 = array(
+				'question'=>$ques,
+				'exam_name_id'=>$exam_name_id,
+				'exam_subject_id'=>$exam_subject_id,
+				'exam_master_id'=>$exam_master_id );
+			$in_q1 = $this->db->insert('question_master',$val1);
+			if($in_q1)
+			{
+				$tt=$this->db->insert_id();
+				$val2 = array(
+					'question_master_id'=>$tt,
+					'A'=>$op_txt1,
+					'B'=>$op_txt2,
+					'C'=>$op_txt3,
+					'D'=>$op_txt4,
+					'E'=>$op_txt5 );
+				$in_q2 = $this->db->insert('question_ans',$val2);
+				if($in_q2)
+				{
+					$val3 = array(
+						'question_master_id'=>$tt,
+						'right_answer'=>$ans,
+						);
+					$in_q3 = $this->db->insert('right_ans',$val3);
+					if($in_q3)
+					{
+						$val4 = array(
+						'question'=>$tt,
 						'q_img1'=>$qf1,
 						'q_img2'=>$qf2,
 						'q_img3'=>$qf3,
@@ -197,7 +237,22 @@
 						'q_ans_img5'=>$af5,
 						'right_answer'=>$ans
 						);
-			return $in_q = $this->db->insert('question_images',$val);
+						return $in_q = $this->db->insert('question_images',$val4);
+					}
+					else
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					return 0;
+				}
+			}
+			else
+			{
+				return 0;
+			}
 		}
 	}
     

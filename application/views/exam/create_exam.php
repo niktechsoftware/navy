@@ -71,7 +71,8 @@
                                                                             if(data==1)
                                                                             {
                                                                                 alert("Exam Deleted Successfully");
-                                                                                $("#table1_div").load(location.href + " #table1_div");
+                                                                                location.reload();
+                                                                                // $("#table1_div").load(location.href + " #table1_div");
                                                                             }
                                                                             else if(data==0)
                                                                             {
@@ -158,7 +159,7 @@
                                                                             {
                                                                                 alert("Subject Deleted Successfully");
                                                                                 // location.reload();
-                                                                                $("#table2_div").load(location.href + " #table2_div");
+                                                                                location.reload();
                                                                             }
                                                                             else if(data==0)
                                                                             {
@@ -205,9 +206,9 @@
                                     <div class="tab-pane fade" id="contact3" role="tabpanel" aria-labelledby="contact-tab3">
                                         <div style="margin:3%;">
                                             <div class="row">
-                                                <div class="col-md-5">
+                                                <div class="col-md-4">
                                                     <b>Select Exam :</b><select style="width:250px;margin:3%;" class="form-control" id="select_exam">
-                                                        <option>Select Exam</option>
+                                                        <option disabled selected>Select Exam</option>
                                                         <?php    
                                                         foreach($gt_val->result() as $dt_ex)
                                                         { ?>
@@ -215,7 +216,17 @@
                                                         <?php } ?>
                                                     </select>
                                                 </div>
-                                                <div class="col-md-7">
+                                                <div class="col-md-4">
+                                                    <b>Select Exam Language :</b><select style="width:250px;margin:3%;" class="form-control" id="select_lang">
+                                                        <option disabled selected>Select Language</option>
+                                                        <?php    
+                                                        foreach($dt_lang->result() as $dt_lg)
+                                                        { ?>
+                                                        <option value="<?= $dt_lg->id;?>"><?= $dt_lg->language;?></option>
+                                                        <?php } ?>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-4">
                                                     <label><b> Create Practice Set Name : </b></label><input type="text" id="tst_name" name="tst_name" required class="form-control" style="width:300px;"/>
                                                     <input type="submit" id="btn_tst" name = "btn_tst" value="Create Test" class="btn btn-primary" style="margin:2%"/>
                                                 </div>
@@ -226,8 +237,10 @@
                                                         <tr>
                                                             <th class="text-center"> #</th>
                                                             <th class="text-center">Exam</th>
+                                                            <th class="text-center">Language</th> 
                                                             <th class="text-center">Test Name</th>
-                                                            <th class="text-center">Action</th>                     
+                                                            <th class="text-center">Edit</th> 
+                                                            <th class="text-center">Delete</th>                     
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -240,6 +253,9 @@
                                                                 <?php $this->db->where('id',$data_test->exam_master_id);
                                                                 $dx_exam = $this->db->get('exam_master'); ?>
                                                                 <td class="text-center"><?php if($dx_exam->num_rows()>0){ echo $dx_exam->row()->name; } else { echo "N/A"; } ?></td>
+                                                                <?php $this->db->where('id',$data_test->test_language_id);
+                                                                $dx_lang = $this->db->get('test_language'); ?>
+                                                               <td class="text-center"><?php if($dx_lang->num_rows()>0){ echo $dx_lang->row()->language; } else { echo "N/A"; } ?></td>
                                                                 <td class="text-center">
                                                                     <label id="sh_test<?= $i;?>"><?= $data_test->exam_name;?></label>
                                                                     <input type="text" id="edit_test_id<?= $i;?>" value="<?= $data_test->exam_name;?>">
@@ -288,7 +304,7 @@
                                                                             {
                                                                                 alert("Test Deleted Successfully");
                                                                                 // location.reload();
-                                                                                $("#table3_div").load(location.href + " #table3_div");
+                                                                                location.reload();
                                                                             }
                                                                             else if(data==0)
                                                                             {
@@ -360,8 +376,8 @@ $("#btn_sub").click(function(){
 $("#btn_tst").click(function(){
     var test_n = $("#tst_name").val();
     var exam_n = $('#select_exam').val();
-    // var subject_n = $('#select_subject').val();
-    $.post("<?= site_url();?>/adminController/create_test", {test_n : test_n, exam_n : exam_n}, function(data){
+    var lang_n = $('#select_lang').val();
+    $.post("<?= site_url();?>/adminController/create_test", {test_n : test_n, exam_n : exam_n,lang_n : lang_n}, function(data){
         if(data==1)
         {
             alert("Test Created Successfully.");

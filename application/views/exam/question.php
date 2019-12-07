@@ -33,6 +33,9 @@
                             <form method="post" action="<?= base_url();?>index.php/adminController/new_ques" enctype="multipart/form-data" >
                             <div class="card-body">
                                 <div class="row">
+                                <input type="hidden" name="exam_master_id" value="<?= $select_exam;?>">
+                                <input type="hidden" name="exam_test_id" value="<?= $select_test;?>">
+                                <input type="hidden" name="exam_subject_id" value="<?= $select_subject;?>">
                                     <div class="col-md-3"><label style="float:right"><b>Question :</b></label></div>
                                     <div class="col-md-9">
                                         <textarea id="ques1" name="ques1" class="form-control"
@@ -64,13 +67,13 @@
                                 </div>
                                 <div class="row" style="margin-left:45px;">
                                     <div class="col-md-6">
-                                        A:<input type="file" id="af1_id" name="af1" class="form-control" required><br>
-                                        B:<input type="file" id="af2_id" name="af2" class="form-control" required><br>
-                                        C:<input type="file" id="af3_id" name="af3" class="form-control" required><br>
+                                        A:<input type="text" id="txt_af1_id" name="txt_af1" class="form-control" required><input type="file" id="af1_id" name="af1" class="form-control"><br>
+                                        B:<input type="text" id="txt_af2_id" name="txt_af2" class="form-control" required><input type="file" id="af2_id" name="af2" class="form-control" ><br>
+                                        C:<input type="text" id="txt_af3_id" name="txt_af3" class="form-control" required><input type="file" id="af3_id" name="af3" class="form-control" ><br>
                                     </div>
                                     <div class="col-md-6">
-                                        D:<input type="file" id="af4_id" name="af4" class="form-control" required><br>
-                                        E:<input type="file" id="af5_id" name="af5" class="form-control" required><br>
+                                        D:<input type="text" id="txt_af4_id" name="txt_af4" class="form-control" required><input type="file" id="af4_id" name="af4" class="form-control" ><br>
+                                        E:<input type="text" id="txt_af5_id" name="txt_af5" class="form-control" ><input type="file" id="af5_id" name="af5" class="form-control" ><br>
                                         Select Answer:<select class="form-control" required name = "sel_ct" style="width:150px">
                                             <option value="0" disabled selected>--Select--</option>
                                             <option value="1">A</option>
@@ -111,5 +114,30 @@
             var ques4 = $("#ques1").val();
             var new4 = ques4+"<=4!>";
             $("#ques1").val(new4);
+        });
+        $("#af1_id").change(function(){
+            var op1 = $("#txt_af1_id").val();
+            var new_op1 = op1+"<=5!>";
+            $("#txt_af1_id").val(new_op1);
+        });
+        $("#af2_id").change(function(){
+            var op2 = $("#txt_af2_id").val();
+            var new_op2 = op2+"<=6!>";
+            $("#txt_af2_id").val(new_op2);
+        });
+        $("#af3_id").change(function(){
+            var op3 = $("#txt_af3_id").val();
+            var new_op3 = op3+"<=7!>";
+            $("#txt_af3_id").val(new_op3);
+        });
+        $("#af4_id").change(function(){
+            var op4 = $("#txt_af4_id").val();
+            var new_op4 = op4+"<=8!>";
+            $("#txt_af4_id").val(new_op4);
+        });
+        $("#af5_id").change(function(){
+            var op5 = $("#txt_af5_id").val();
+            var new_op5 = op5+"<=9!>";
+            $("#txt_af5_id").val(new_op5);
         });
     </script>
